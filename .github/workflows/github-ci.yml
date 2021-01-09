@@ -1,0 +1,33 @@
+name: build-android
+on: workflow_dispatch
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Install npm dependencies
+        run: |
+          yarn install
+      - name: Build Android Release
+        run: |
+          cd android && chmod +x gradlew && ./gradlew assembleRelease
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: APK Release
+          path: android/app/build/outputs/apk/
+  build-aab:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Install npm dependencies
+        run: |
+          yarn install
+      - name: Build Android Release
+        run: |
+          cd android && chmod +x gradlew && ./gradlew bundleRelease
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: AAB Release
+          path: android/app/build/outputs/bundle/
